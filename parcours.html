@@ -52,6 +52,47 @@
                 width: 100%;
                 height: 100%;
             }
+            /* Style pour la carte Google Maps intégrée */
+            .map-container {
+                position: relative;
+                padding-bottom: 45%;
+                height: 0;
+                overflow: hidden;
+                max-width: 100%;
+                border-radius: 6px;
+                margin-top: 1rem;
+                margin-bottom: 1.5rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+            .map-container iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: 0;
+            }
+            /* Style pour le sommaire interactif cliquable */
+            .anchor-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.8rem;
+                justify-content: center;
+                margin-bottom: 2.5rem;
+            }
+            .anchor-nav a {
+                background: #1b1b1b;
+                color: #fff !important;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                font-size: 0.9rem;
+                font-weight: bold;
+                text-decoration: none;
+                transition: background 0.2s;
+            }
+            .anchor-nav a:hover {
+                background: #d35400;
+            }
         </style>
     </head>
     <body class="is-preload">
@@ -86,7 +127,7 @@
                                     <p>Tout ce qu'il faut savoir pour ne pas vous perdre et donner le meilleur de vous-même !</p>
                                 </header>
 
-                                <!-- Vidéo de présentation YouTube (Non répertoriée / Hébergée) -->
+                                <!-- Vidéo de présentation YouTube -->
                                 <div class="video-container">
                                     <iframe 
                                         src="https://www.youtube.com/embed/GDZ5we4McVM" 
@@ -99,25 +140,42 @@
 
                                 <!-- Logique globale du parcours -->
                                 <div class="highlight-box">
-                                    <h3>💡 Logique du parcours (2 boucles)</h3>
+                                    <h3>💡 Logique du parcours</h3>
                                     <ul>
                                         <li><strong>Une grande boucle bleue de 4 km</strong> en aller-retour : 2 km aller, 2 km retour.</li>
-                                        <li><strong>Une petite boucle rouge de 1 km</strong> en aller-retour : 500 m aller, 500 m retour.</li>
-                                        <li><strong>Ligne droite d'arrivée verte.</strong></li>
+                                        <li><strong>Une petite boucle rouge de 0,9 km</strong> en aller-retour : 400 m aller, 500 m retour.</li>
+                                        <li><strong>Une dernière ligne droite d'arrivée verte de 100 m.</strong></li>
                                     </ul>
                                     <div class="image fit"><img src="images/parcours (11).png" alt="Vue d'ensemble du parcours" /></div>
+                                </div>
+
+                                <!-- Sommaire cliquable -->
+                                <div class="anchor-nav">
+                                    <a href="#section-rdv">1. Point de RDV</a>
+                                    <a href="#section-bleue">2. Grande Boucle</a>
+                                    <a href="#section-rouge">3. Petite Boucle</a>
+                                    <a href="#section-arrivee">4. Ligne Droite & Arrivée</a>
                                 </div>
 
                                 <hr />
 
                                 <!-- SECTION 1: Point de RDV -->
-                                <h2>1. Point de Rendez-vous</h2>
+                                <h2 id="section-rdv">1. Point de Rendez-vous</h2>
                                 <p>Le parking se situe à 500 m de la zone de départ.<br />
                                 📍 <strong>Coordonnées GPS & Accès :</strong> 
                                 <a href="https://www.google.com/maps/place/48%C2%B057'51.8%22N+2%C2%B010'27.6%22E/@48.9643889,2.1743333,209m/data=!3m2!1e3!4b1!4m4!3m3!8m2!3d48.9643889!4d2.1743333?entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">
                                     48°57’51.8″N 2°10’27.6″E (Ouvrir dans Google Maps)
                                 </a>
                                 </p>
+
+                                <!-- Carte Google Maps intégrée -->
+                                <div class="map-container">
+                                    <iframe 
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d319.4630043815047!2d2.1743333!3d48.9643889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDjCsDU3JzUxLjgiTiAywrAxMCcyNy42IkU!5e0!3m2!1sfr!2sfr!4v1650000000000!5m2!1sfr!2sfr" 
+                                        allowfullscreen="" 
+                                        loading="lazy">
+                                    </iframe>
+                                </div>
 
                                 <div class="parcours-step">
                                     <div class="image fit"><img src="images/parcours (14).png" alt="Plan du parking" /></div>
@@ -133,8 +191,8 @@
                                 <hr />
 
                                 <!-- SECTION 2: Grande boucle bleue -->
-                                <h2>2. Grande boucle bleue (4 km)</h2>
-                                <p><em>2 km à l’aller, 2 km au retour. Trouvez votre rythme avant le dernier kilomètre.</em></p>
+                                <h2 id="section-bleue">2. Grande boucle bleue (4 km)</h2>
+                                <p><em>2 km à l’aller, 2 km au retour. Trouvez votre rythme avant d'enchaîner.</em></p>
 
                                 <div class="parcours-step">
                                     <h3>Départ</h3>
@@ -168,12 +226,11 @@
                                 <hr />
 
                                 <!-- SECTION 3: Petite boucle rouge -->
-                                <h2>3. Petite boucle rouge (1 km)</h2>
-                                <p><em>Un dernier kilomètre, un profil descendant : c’est le moment d’envoyer les watts !</em></p>
-                                <p>Enchaînez directement après le demi-tour de la première boucle. Parcourez la petite boucle (1 km au total, avec un profil descendant). Fin de course jugée à la montre ou au premier plot violet, avant la « zone vomis ». Prévoyez les sacs !</p>
+                                <h2 id="section-rouge">3. Petite boucle rouge (0,9 km)</h2>
+                                <p>Enchaînez directement après le demi-tour de la première boucle. Parcourez la petite boucle (0,9 km au total : 400m aller, 500m retour).</p>
 
                                 <div class="parcours-step">
-                                    <h3>Aller</h3>
+                                    <h3>Aller (400m)</h3>
                                     <div class="image fit"><img src="images/parcours (6).png" alt="Aller petite boucle rouge" /></div>
                                 </div>
 
@@ -184,12 +241,17 @@
                                 </div>
 
                                 <div class="parcours-step">
-                                    <h3>Retour</h3>
+                                    <h3>Retour (500m)</h3>
                                     <div class="image fit"><img src="images/parcours (5).png" alt="Retour petite boucle rouge" /></div>
                                     <p>On repasse les plots oranges :</p>
                                     <div class="image fit"><img src="images/parcours (3).png" alt="Passage des plots oranges" /></div>
                                 </div>
 
+                                <hr />
+
+                                <!-- SECTION 4: Dernière ligne droite -->
+                                <h2 id="section-arrivee">4. Dernière ligne droite (100m)</h2>
+                                
                                 <div class="parcours-step">
                                     <h3>Sprint Final 🚀</h3>
                                     <ul>
@@ -201,19 +263,10 @@
                                 </div>
 
                                 <div class="parcours-step">
-                                    <h3>Zone d'arrivée & Finish</h3>
-                                    <p>⚠️ <strong>Attention aux cyclistes et aux voitures !</strong></p>
-                                    <p>Finish (zone verte = zone vomis ? non merci) :</p>
-                                    <ul>
-                                        <li>Quelque part dans cette zone, c’est la montre qui donne le finish.</li>
-                                        <li>Si pas de montre : courez jusqu’au premier plot (violet).</li>
-                                    </ul>
-                                    <div class="image fit"><img src="images/parcours (2).png" alt="Ligne d'arrivée" /></div>
-                                </div>
-
-                                <div class="parcours-step">
-                                    <h3>Zone Vomis 🤮</h3>
-                                    <p>En vert foncé sur votre droite :</p>
+                                    <h3>Zone d'arrivée & Finition</h3>
+                                    <p><strong>Zone vert clair :</strong> Arrivée ! Quelque part dans cette zone, c'est la montre qui donne le finish.</p>
+                                    <p>⚠️ <strong>Attention aux cyclistes et aux voitures ! La route se partage.</strong></p>
+                                    <p><strong>Zone vert foncé :</strong> Zone vomis.</p>
                                     <div class="image fit"><img src="images/parcours (15).png" alt="Zone vomis" /></div>
                                 </div>
 
