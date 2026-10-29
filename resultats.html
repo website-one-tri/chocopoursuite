@@ -56,30 +56,15 @@
                 font-weight: bold;
                 color: #1b1b1b;
             }
-            .controls-container {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
-                align-items: center;
-                gap: 1rem;
+            .search-container {
                 margin-bottom: 1.5rem;
             }
-            .search-container {
-                flex: 1;
-                min-width: 220px;
-            }
-            .search-container input, .limit-container select {
+            .search-container input {
                 width: 100%;
                 padding: 0.8rem 1rem;
                 border-radius: 4px;
                 border: 1px solid rgba(0,0,0,0.2);
                 background: #fff;
-            }
-            .limit-container {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                font-size: 0.9rem;
             }
             .rank-badge {
                 font-weight: bold;
@@ -90,10 +75,27 @@
             .rank-1 { color: #d4af37; font-size: 1.2rem; }
             .rank-2 { color: #c0c0c0; font-size: 1.1rem; }
             .rank-3 { color: #cd7f32; font-size: 1.1rem; }
-            .table-wrapper {
-                overflow-x: auto;
+            
+            /* Conteneur avec curseur vertical */
+            .table-scroll-container {
+                max-height: 400px;
+                overflow-y: auto;
+                border: 1px solid rgba(0, 0, 0, 0.15);
+                border-radius: 4px;
                 margin-bottom: 1.5rem;
+                background: #fff;
             }
+            .table-scroll-container table {
+                margin-bottom: 0;
+            }
+            .table-scroll-container th {
+                position: sticky;
+                top: 0;
+                background: #f4f4f5;
+                z-index: 10;
+                box-shadow: inset 0 -1px 0 rgba(0,0,0,0.1);
+            }
+
             /* Bloc Extras */
             .extras-box {
                 background: rgba(211, 84, 0, 0.05);
@@ -123,7 +125,7 @@
                 transition: background-color 0.2s;
             }
             th.sortable:hover {
-                background-color: rgba(0, 0, 0, 0.05);
+                background-color: rgba(0, 0, 0, 0.08);
             }
             th.sortable::after {
                 content: " ↕";
@@ -185,29 +187,18 @@
                                         <div class="stat-value" id="statWinnerChrono">---</div>
                                     </div>
                                     <div class="stat-card">
-                                        <h4>Participants</h4>
+                                        <h4>Coureurs Classés</h4>
                                         <div class="stat-value" id="statCount">0</div>
                                     </div>
                                 </div>
 
-                                <!-- Contrôles (Recherche + Pagination) -->
-                                <div class="controls-container">
-                                    <div class="search-container">
-                                        <input type="text" id="searchInput" placeholder="🔍 Rechercher un nom ou un ami..." />
-                                    </div>
-                                    <div class="limit-container">
-                                        <label for="rowLimit">Afficher :</label>
-                                        <select id="rowLimit">
-                                            <option value="10" selected>10 coureurs</option>
-                                            <option value="25">25 coureurs</option>
-                                            <option value="50">50 coureurs</option>
-                                            <option value="all">Tous</option>
-                                        </select>
-                                    </div>
+                                <!-- Barre de recherche Résultats -->
+                                <div class="search-container">
+                                    <input type="text" id="searchInput" placeholder="🔍 Rechercher un coureur ou un ami..." />
                                 </div>
 
-                                <!-- Tableau dynamique -->
-                                <div class="table-wrapper">
+                                <!-- Tableau dynamique avec curseur (scroll) -->
+                                <div class="table-scroll-container">
                                     <table>
                                         <thead>
                                             <tr>
@@ -224,7 +215,7 @@
 
                                 <!-- Bloc Extras de l'édition -->
                                 <div class="extras-box" id="extrasBox">
-                                    <h4>🤝 Organisation & Extras de l'édition</h4>
+                                    <h4>🤝 Organisation, Staff & Extras de l'édition</h4>
                                     <p id="extrasContent">---</p>
                                 </div>
 
@@ -232,14 +223,16 @@
                                 <div class="trivia-section">
                                     <header style="margin-bottom: 1.5rem;">
                                         <h2>📊 Trivia & Statistiques Coureurs</h2>
-                                        <p>Classement global unifié de toutes les éditions (noms normalisés). Cliquez sur les en-têtes pour trier.</p>
+                                        <p>Classement consolidé sur l'ensemble des éditions. Cliquez sur les en-têtes pour trier.</p>
                                     </header>
 
-                                    <div class="search-container" style="margin-bottom: 1.5rem;">
+                                    <!-- Barre de recherche Trivia -->
+                                    <div class="search-container">
                                         <input type="text" id="triviaSearchInput" placeholder="🔍 Rechercher un coureur dans les stats globales..." />
                                     </div>
 
-                                    <div class="table-wrapper" style="margin-bottom: 0;">
+                                    <!-- Tableau Trivia avec curseur (scroll) -->
+                                    <div class="table-scroll-container" style="margin-bottom: 0;">
                                         <table>
                                             <thead>
                                                 <tr>
@@ -278,42 +271,42 @@
                     runners: [
                         { rank: 1, name: "Marion", chrono: "00:36:00" },
                         { rank: 2, name: "Léa TTQ", chrono: "00:27:00" },
-                        { rank: 3, name: "Mika + Léonore", chrono: "00:21:24" },
-                        { rank: 4, name: "Annie B", chrono: "00:28:14" },
-                        { rank: 5, name: "Méli", chrono: "00:29:00" },
-                        { rank: 6, name: "Paul Gré", chrono: "00:27:08" },
-                        { rank: 7, name: "Mailys", chrono: "00:28:00" },
-                        { rank: 8, name: "Pauline Drd", chrono: "00:24:20" },
-                        { rank: 9, name: "Zaza", chrono: "00:27:15" },
-                        { rank: 10, name: "Vio", chrono: "00:21:28" },
-                        { rank: 11, name: "Elisabeth", chrono: "00:23:21" },
-                        { rank: 12, name: "La Taille", chrono: "00:22:20" },
-                        { rank: 13, name: "Clarisse", chrono: "00:19:39" },
-                        { rank: 14, name: "Mathilde", chrono: "00:27:20" },
-                        { rank: 15, name: "Paulo 21", chrono: "00:20:00" },
-                        { rank: 16, name: "Aubin", chrono: "00:17:41" },
-                        { rank: 17, name: "Gaultier", chrono: "00:22:09" },
-                        { rank: 18, name: "Gretienne", chrono: "00:16:30" },
-                        { rank: 19, name: "Paquman", chrono: "00:17:34" },
-                        { rank: 20, name: "Alex7", chrono: "00:12:35" },
-                        { rank: 21, name: "Philou", chrono: "00:25:30" },
-                        { rank: 22, name: "Coco LG", chrono: "00:26:22" },
-                        { rank: 23, name: "Dauritos", chrono: "00:19:00" },
-                        { rank: 24, name: "Longou", chrono: "00:18:24" },
-                        { rank: 25, name: "Félix Engelhard", chrono: "00:16:33" },
-                        { rank: 26, name: "Manu", chrono: "00:20:54" },
-                        { rank: 27, name: "Guillaume Sch", chrono: "00:19:00" },
-                        { rank: 28, name: "Ridant", chrono: "00:20:00" },
-                        { rank: 29, name: "Bouclinette", chrono: "00:17:33" },
-                        { rank: 30, name: "Le BG du 78", chrono: "00:15:52" },
-                        { rank: 31, name: "Jéjouille", chrono: "00:15:30" },
-                        { rank: 32, name: "Blair Lewis", chrono: "00:24:00" },
-                        { rank: 33, name: "Bé", chrono: "00:24:00" },
-                        { rank: 34, name: "Béa", chrono: "00:24:00" },
-                        { rank: 35, name: "Reyeps", chrono: "00:28:00" },
-                        { rank: 36, name: "AF7", chrono: "Abandon / NC" }
+                        { rank: 3, name: "Léonore", chrono: "00:21:24" },
+                        { rank: 4, name: "Mika", chrono: "00:21:24" },
+                        { rank: 5, name: "Annie B", chrono: "00:28:14" },
+                        { rank: 6, name: "Méli", chrono: "00:29:00" },
+                        { rank: 7, name: "Paul Gré", chrono: "00:27:08" },
+                        { rank: 8, name: "Mailys", chrono: "00:28:00" },
+                        { rank: 9, name: "Pauline Drd", chrono: "00:24:20" },
+                        { rank: 10, name: "Zaza", chrono: "00:27:15" },
+                        { rank: 11, name: "Vio", chrono: "00:21:28" },
+                        { rank: 12, name: "Elisabeth", chrono: "00:23:21" },
+                        { rank: 13, name: "La Taille", chrono: "00:22:20" },
+                        { rank: 14, name: "Clarisse", chrono: "00:19:39" },
+                        { rank: 15, name: "Mathilde", chrono: "00:27:20" },
+                        { rank: 16, name: "Paulo 21", chrono: "00:20:00" },
+                        { rank: 17, name: "Aubin", chrono: "00:17:41" },
+                        { rank: 18, name: "Gaultier", chrono: "00:22:09" },
+                        { rank: 19, name: "Gretienne", chrono: "00:16:30" },
+                        { rank: 20, name: "Paquman", chrono: "00:17:34" },
+                        { rank: 21, name: "Alex7", chrono: "00:12:35" },
+                        { rank: 22, name: "Philou", chrono: "00:25:30" },
+                        { rank: 23, name: "Coco LG", chrono: "00:26:22" },
+                        { rank: 24, name: "Dauritos", chrono: "00:19:00" },
+                        { rank: 25, name: "Longou", chrono: "00:18:24" },
+                        { rank: 26, name: "Félix Engelhard", chrono: "00:16:33" },
+                        { rank: 27, name: "Manu", chrono: "00:20:54" },
+                        { rank: 28, name: "Guillaume Sch", chrono: "00:19:00" },
+                        { rank: 29, name: "Ridant", chrono: "00:20:00" },
+                        { rank: 30, name: "Bouclinette", chrono: "00:17:33" },
+                        { rank: 31, name: "Le BG du 78", chrono: "00:15:52" },
+                        { rank: 32, name: "Jéjouille", chrono: "00:15:30" },
+                        { rank: 33, name: "Blair Lewis", chrono: "00:24:00" },
+                        { rank: 34, name: "Bé", chrono: "00:24:00" },
+                        { rank: 35, name: "Béa", chrono: "00:24:00" },
+                        { rank: 36, name: "Reyeps", chrono: "00:28:00" }
                     ],
-                    extras: "<strong>Marcheurs :</strong> Parents Durand | <strong>Invités :</strong> 2 amis d'Annette, Julie & Pote Julie | <strong>Staff & Supporters :</strong> Lolo (Chronométreur), Pedro (Cameraman), Camzer (Supportrice), Ava (Supportrice), Kiko et Murielle (Supporters Vélo)."
+                    extras: "<strong>Marcheurs :</strong> Parents Durand | <strong>Invités :</strong> 2 amis d'Annette, Julie & Pote Julie | <strong>Staff & Supporters :</strong> AF7 (Popcorn man), Lolo (Chronométreur), Pedro (Cameraman), Camzer (Supportrice), Ava (Supportrice), Kiko et Murielle (Supporters Vélo)."
                 },
                 "2024": {
                     runners: [
@@ -347,7 +340,8 @@
                         { rank: 28, name: "Emma", chrono: "00:31:30" },
                         { rank: 29, name: "Annie B", chrono: "00:31:46" },
                         { rank: 30, name: "Aude", chrono: "00:44:00" },
-                        { rank: 31, name: "Camzer", chrono: "00:44:00" }
+                        { rank: 31, name: "Ava", chrono: "00:44:00" },
+                        { rank: 32, name: "Camzer", chrono: "00:44:00" }
                     ],
                     extras: "<strong>Organisation :</strong> Jéjouille (Popcorn man), Lolo (Chronométreur)."
                 },
@@ -369,7 +363,7 @@
                         { rank: 14, name: "Annie B", chrono: "00:28:52" },
                         { rank: 15, name: "Vio", chrono: "00:20:58" }
                     ],
-                    extras: "<strong>Organisation :</strong> Pierre (Cameraman)."
+                    extras: "<strong>Organisation :</strong> Pedro (Cameraman)."
                 },
                 "2022": {
                     runners: [
@@ -409,7 +403,7 @@
                         { rank: 11, name: "Philippine", chrono: "--" },
                         { rank: 12, name: "AF7", chrono: "Abandon" }
                     ],
-                    extras: "<strong>Organisation & Support :</strong> Camzer, Annie B, Colline, Lolo (Chronométreur), Pierre (Cameraman)."
+                    extras: "<strong>Organisation & Support :</strong> Camzer, Annie B, Colline, Lolo (Chronométreur), Pedro (Cameraman)."
                 },
                 "2020": {
                     runners: [
@@ -425,7 +419,7 @@
                         { rank: 10, name: "Pedro", chrono: "00:16:11" },
                         { rank: 11, name: "Le BG du 78", chrono: "00:15:48" }
                     ],
-                    extras: "<strong>Organisation :</strong> Anne (Chronométreur), Paul (Cameraman)."
+                    extras: "<strong>Organisation :</strong> Annie B (Chronométreur), Pedro (Cameraman)."
                 }
             };
 
@@ -433,16 +427,13 @@
             let currentSortColumn = "count";
             let currentSortDirection = "desc";
 
-            // Fonction de normalisation des noms pour fusionner "Le BG du 78" et "Le Bg du 78"
             function normalizeName(name) {
                 if (!name) return "";
-                let cleaned = name.trim().toLowerCase();
-                // Normalisation spécifique pour le BG du 78
-                if (cleaned.includes("bg du 78") || cleaned.includes("bg du 78")) {
+                let cleaned = name.trim();
+                if (cleaned.toLowerCase().includes("bg du 78")) {
                     return "Le BG du 78";
                 }
-                // Capitalisation propre de la première lettre de chaque mot
-                return name.trim();
+                return cleaned;
             }
 
             function renderTable(year, filter = "") {
@@ -455,13 +446,10 @@
                     item.name.toLowerCase().includes(filter.toLowerCase())
                 );
 
-                const limitVal = document.getElementById("rowLimit").value;
-                const displayData = limitVal === "all" ? filteredData : filteredData.slice(0, parseInt(limitVal));
-
-                if (displayData.length === 0) {
+                if (filteredData.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Aucun coureur trouvé</td></tr>`;
                 } else {
-                    displayData.forEach(item => {
+                    filteredData.forEach(item => {
                         let rankDisplay = item.rank;
                         if (item.rank === 1) rankDisplay = `<span class="rank-badge rank-1">🥇 1</span>`;
                         else if (item.rank === 2) rankDisplay = `<span class="rank-badge rank-2">🥈 2</span>`;
@@ -477,12 +465,9 @@
                     });
                 }
 
-                // Statistiques haut de page
                 document.getElementById("statWinner").innerText = data.length > 0 ? data[0].name : "---";
                 document.getElementById("statWinnerChrono").innerText = data.length > 0 ? data[0].chrono : "---";
                 document.getElementById("statCount").innerText = data.length;
-
-                // Affichage des extras
                 document.getElementById("extrasContent").innerHTML = yearObj.extras || "Aucun extra pour cette édition.";
             }
 
@@ -539,7 +524,6 @@
                     return { name: runner.name, count, best, worst, avgRank, avgSec, avgTimeStr };
                 });
 
-                // Tri dynamique
                 triviaArray.sort((a, b) => {
                     let valA = a[currentSortColumn];
                     let valB = b[currentSortColumn];
@@ -592,10 +576,6 @@
 
             document.getElementById("searchInput").addEventListener("input", function(e) {
                 renderTable(currentYear, e.target.value);
-            });
-
-            document.getElementById("rowLimit").addEventListener("change", function() {
-                renderTable(currentYear, document.getElementById("searchInput").value);
             });
 
             document.getElementById("triviaSearchInput").addEventListener("input", function(e) {
