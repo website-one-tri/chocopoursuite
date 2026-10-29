@@ -11,6 +11,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <link rel="stylesheet" href="assets/css/main.css" />
         <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+        <style>
+            /* Style personnalisé pour l'encart Strava */
+            .strava-box {
+                background: rgba(252, 76, 2, 0.08);
+                border-left: 5px solid #fc4c02;
+                padding: 2rem;
+                margin-top: 3rem;
+                border-radius: 6px;
+                text-align: center;
+            }
+            .strava-box h3 {
+                color: #fc4c02;
+                margin-bottom: 0.5rem;
+                font-size: 1.4rem;
+            }
+            .strava-box p {
+                margin-bottom: 1.5rem;
+            }
+            .button-strava {
+                background-color: #fc4c02 !important;
+                color: #ffffff !important;
+                box-shadow: none !important;
+                border: none !important;
+                transition: background-color 0.2s ease;
+            }
+            .button-strava:hover {
+                background-color: #e34100 !important;
+            }
+        </style>
     </head>
     <body class="is-preload">
 
@@ -55,6 +84,22 @@
                                 <ul class="actions special">
                                     <li><a href="parcours.html" class="button large">Découvrir le parcours</a></li>
                                 </ul>
+
+                                <!-- Encart Strava -->
+                                <div class="strava-box">
+                                    <h3>🟧 Rejoignez le Club Strava Officiel Chocopoursuite</h3>
+                                    <p>Partagez vos entraînements, suivez les performances de la chocoteam et préparez la course avec nous !</p>
+                                    <ul class="actions special" style="margin-bottom: 0;">
+                                        <li>
+                                            <a href="https://www.strava.com/clubs/2397041?utm_source=android_share&utm_medium=social&share_sig=BO3FF7AT1793099100&fbclid=IwY2xjawVQatBleHRuA2FlbQIxMABwZG9mAWJyaWQRMDZvU0NIUDlrYWw1SUVLTGlzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEfnW41AwgT3kt8Mtu5ly_NcslSBCXIQ8RUGS8kOyFRByjHZsWNGIxIePvJ43E_aem_Nm3LUmPZJS8LPMAIv0cYZg&_branch_match_id=1644414866841294324&_branch_referrer=H4sIAAAAAAAAAwXB25JDMAAA0L%2FZx2qLWd2Zzk6sS2NEXarKiwkNi7AmUsFDv33P%2BeV8nL4kaeIMz3iHx3FHm6GTHoWKVaPyts%2FiuypK2jzPUKTHpcXiHmCuU3IJX%2BBo0SKACwK6yOxTDxJnxUkQIiOb470HY4OyNBGHKL67N5tu5RC2em%2BJ0jqNmQ5W1EKBtm7xtlpBLRBXo1sBMKshUQ5A1De54xriL5WuuVdONNJ%2FHjDQwtiOtO66WqG%2BtpdsSjwbLpD4s6PIZo5Jn3u97Ma9nzmR5voIwHlfpln98WakIow1Q50X7E9MhJ3NZ03%2BATEWhqwDAQAA" 
+                                               target="_blank" 
+                                               rel="noopener noreferrer" 
+                                               class="button button-strava large">
+                                                Rejoindre le Club Strava
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </article>
 
                     </div>
