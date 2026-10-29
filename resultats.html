@@ -1,0 +1,545 @@
+<!DOCTYPE HTML>
+<!--
+    Massively by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="fr">
+    <head>
+        <title>Résultats – La Chocopoursuite</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+        <style>
+            /* Styles interactifs pour la page Résultats */
+            .year-tabs {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                justify-content: center;
+                margin-bottom: 2rem;
+            }
+            .year-tab {
+                padding: 0.6rem 1.2rem !important;
+                font-weight: bold;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+            .year-tab.active {
+                background-color: #1b1b1b !important;
+                color: #ffffff !important;
+                border-color: #1b1b1b !important;
+            }
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+            .stat-card {
+                background: rgba(0, 0, 0, 0.03);
+                border-left: 4px solid #d35400;
+                padding: 1rem;
+                border-radius: 4px;
+                text-align: center;
+            }
+            .stat-card h4 {
+                margin: 0 0 0.3rem 0;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                color: #777;
+            }
+            .stat-card .stat-value {
+                font-size: 1.3rem;
+                font-weight: bold;
+                color: #1b1b1b;
+            }
+            .search-container {
+                margin-bottom: 1.5rem;
+            }
+            .search-container input {
+                width: 100%;
+                padding: 0.8rem 1rem;
+                border-radius: 4px;
+                border: 1px solid rgba(0,0,0,0.2);
+            }
+            .rank-badge {
+                font-weight: bold;
+                display: inline-block;
+                min-width: 28px;
+                text-align: center;
+            }
+            .rank-1 { color: #d4af37; font-size: 1.2rem; }
+            .rank-2 { color: #c0c0c0; font-size: 1.1rem; }
+            .rank-3 { color: #cd7f32; font-size: 1.1rem; }
+            .table-wrapper {
+                overflow-x: auto;
+                margin-bottom: 3rem;
+            }
+            /* Style de la section Trivia et en-têtes cliquables */
+            .trivia-section {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                border-radius: 6px;
+                padding: 2rem;
+                margin-top: 3rem;
+            }
+            th.sortable {
+                cursor: pointer;
+                user-select: none;
+                transition: background-color 0.2s;
+            }
+            th.sortable:hover {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            th.sortable::after {
+                content: " ↕";
+                font-size: 0.8rem;
+                color: #888;
+            }
+        </style>
+    </head>
+    <body class="is-preload">
+
+        <!-- Wrapper -->
+            <div id="wrapper">
+
+                <!-- Header -->
+                    <header id="header">
+                        <a href="index.html" class="logo">La Chocopoursuite</a>
+                    </header>
+
+                <!-- Nav -->
+                    <nav id="nav">
+                        <ul class="links">
+                            <li><a href="index.html">Accueil</a></li>
+                            <li><a href="parcours.html">Parcours</a></li>
+                            <li class="active"><a href="resulats.html">Résultats</a></li>
+                            <li><a href="plan.html">Plan d'entraînements</a></li>
+                            <li><a href="autres.html">Autres</a></li>
+                        </ul>
+                    </nav>
+
+                <!-- Main -->
+                    <div id="main">
+
+                        <!-- Post / Section Résultats -->
+                            <section class="post">
+                                <header class="major">
+                                    <span class="date">Historique & Performances</span>
+                                    <h1>Tableau des Résultats</h1>
+                                    <p>Retrouvez tous les classements officiels et les chronos des éditions précédentes.</p>
+                                </header>
+
+                                <!-- Sélecteur d'année -->
+                                <div class="year-tabs" id="yearTabs">
+                                    <button class="button year-tab active" data-year="2025">Édition 2025</button>
+                                    <button class="button year-tab" data-year="2024">Édition 2024</button>
+                                    <button class="button year-tab" data-year="2023">Édition 2023</button>
+                                    <button class="button year-tab" data-year="2022">Édition 2022</button>
+                                    <button class="button year-tab" data-year="2021">Édition 2021</button>
+                                    <button class="button year-tab" data-year="2020">Édition 2020</button>
+                                </div>
+
+                                <!-- Cartes statistiques -->
+                                <div class="stats-grid">
+                                    <div class="stat-card">
+                                        <h4>Vainqueur de l'édition</h4>
+                                        <div class="stat-value" id="statWinner">---</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <h4>Chrono du Vainqueur</h4>
+                                        <div class="stat-value" id="statWinnerChrono">---</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <h4>Participants</h4>
+                                        <div class="stat-value" id="statCount">0</div>
+                                    </div>
+                                </div>
+
+                                <!-- Barre de recherche -->
+                                <div class="search-container">
+                                    <input type="text" id="searchInput" placeholder="🔍 Rechercher un nom ou un ami..." />
+                                </div>
+
+                                <!-- Tableau dynamique -->
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 15%;">Place</th>
+                                                <th>Nom du Coureur</th>
+                                                <th style="width: 25%;">Chrono</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="resultsTableBody">
+                                            <!-- Rempli dynamiquement en JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- SECTION TRIVIA -->
+                                <div class="trivia-section">
+                                    <header style="margin-bottom: 1.5rem;">
+                                        <h2>📊 Trivia & Statistiques Coureurs</h2>
+                                        <p>Cliquez sur les en-têtes du tableau pour trier les coureurs selon vos critères (Participations, Meilleurs/Pires classements, Temps moyens).</p>
+                                    </header>
+
+                                    <div class="search-container">
+                                        <input type="text" id="triviaSearchInput" placeholder="🔍 Rechercher un coureur dans les stats globales..." />
+                                    </div>
+
+                                    <div class="table-wrapper" style="margin-bottom: 0;">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th class="sortable" data-sort="name">Coureur</th>
+                                                    <th class="sortable" data-sort="count" style="text-align: center;">Participations</th>
+                                                    <th class="sortable" data-sort="best" style="text-align: center;">Meilleur Clas.</th>
+                                                    <th class="sortable" data-sort="worst" style="text-align: center;">Pire Clas.</th>
+                                                    <th class="sortable" data-sort="avgRank" style="text-align: center;">Clas. Moyen</th>
+                                                    <th class="sortable" data-sort="avgSec" style="text-align: center;">Temps Moyen</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="triviaTableBody">
+                                                <!-- Rempli dynamiquement en JS -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </section>
+
+                    </div>
+
+                <!-- Copyright -->
+                    <div id="copyright">
+                        <ul>
+                            <li>&copy; Chocopoursuite brought to you by KL Sports Inc</li>
+                        </ul>
+                    </div>
+
+            </div>
+
+        <!-- Données et Script Interactif avec Tri Dynamique -->
+        <script>
+            const resultsData = {
+                "2025": [
+                    { rank: 1, name: "Marion", chrono: "00:36:00" },
+                    { rank: 2, name: "Léa TTQ", chrono: "00:27:00" },
+                    { rank: 3, name: "Mika + Léonore", chrono: "00:21:24" },
+                    { rank: 4, name: "Annie B", chrono: "00:28:14" },
+                    { rank: 5, name: "Méli", chrono: "00:29:00" },
+                    { rank: 6, name: "Paul Gré", chrono: "00:27:08" },
+                    { rank: 7, name: "Mailys", chrono: "00:28:00" },
+                    { rank: 8, name: "Pauline Drd", chrono: "00:24:20" },
+                    { rank: 9, name: "Zaza", chrono: "00:27:15" },
+                    { rank: 10, name: "Vio", chrono: "00:21:28" },
+                    { rank: 11, name: "Elisabeth", chrono: "00:23:21" },
+                    { rank: 12, name: "La Taille", chrono: "00:22:20" },
+                    { rank: 13, name: "Clarisse", chrono: "00:19:39" },
+                    { rank: 14, name: "Mathilde", chrono: "00:27:20" },
+                    { rank: 15, name: "Paulo 21", chrono: "00:20:00" },
+                    { rank: 16, name: "Aubin", chrono: "00:17:41" },
+                    { rank: 17, name: "Gaultier", chrono: "00:22:09" },
+                    { rank: 18, name: "Gretienne", chrono: "00:16:30" },
+                    { rank: 19, name: "Paquman", chrono: "00:17:34" },
+                    { rank: 20, name: "Alex7", chrono: "00:12:35" },
+                    { rank: 21, name: "Philou", chrono: "00:25:30" },
+                    { rank: 22, name: "Coco LG", chrono: "00:26:22" },
+                    { rank: 23, name: "Dauritos", chrono: "00:19:00" },
+                    { rank: 24, name: "Longou", chrono: "00:18:24" },
+                    { rank: 25, name: "Félix Engelhard", chrono: "00:16:33" },
+                    { rank: 26, name: "Manu", chrono: "00:20:54" },
+                    { rank: 27, name: "Guillaume Sch", chrono: "00:19:00" },
+                    { rank: 28, name: "Ridant", chrono: "00:20:00" },
+                    { rank: 29, name: "Bouclinette", chrono: "00:17:33" },
+                    { rank: 30, name: "Le Bg du 78", chrono: "00:15:52" },
+                    { rank: 31, name: "Jéjouille", chrono: "00:15:30" },
+                    { rank: 32, name: "Blair Lewis", chrono: "00:24:00" },
+                    { rank: 33, name: "Bé", chrono: "00:24:00" },
+                    { rank: 34, name: "Béa", chrono: "00:24:00" },
+                    { rank: 35, name: "Reyeps", chrono: "00:28:00" },
+                    { rank: 36, name: "AF7", chrono: "Abandon / NC" }
+                ],
+                "2024": [
+                    { rank: 1, name: "Mathilde", chrono: "00:27:55" },
+                    { rank: 2, name: "Alejandra", chrono: "00:35:52" },
+                    { rank: 3, name: "Marion", chrono: "00:36:52" },
+                    { rank: 4, name: "Coco LG", chrono: "00:26:31" },
+                    { rank: 5, name: "Zaza", chrono: "00:26:37" },
+                    { rank: 6, name: "Elisabeth", chrono: "00:22:22" },
+                    { rank: 7, name: "Dudu", chrono: "00:22:23" },
+                    { rank: 8, name: "Aubin", chrono: "00:18:25" },
+                    { rank: 9, name: "Ridant", chrono: "00:20:21" },
+                    { rank: 10, name: "Paulo 21", chrono: "00:20:22" },
+                    { rank: 11, name: "Basile", chrono: "00:17:58" },
+                    { rank: 12, name: "Mini Oisif", chrono: "00:22:40" },
+                    { rank: 13, name: "Drougi", chrono: "00:19:11" },
+                    { rank: 14, name: "Doritos", chrono: "00:20:30" },
+                    { rank: 15, name: "Famasito", chrono: "00:20:35" },
+                    { rank: 16, name: "Béa", chrono: "00:24:35" },
+                    { rank: 17, name: "Philou", chrono: "00:25:24" },
+                    { rank: 18, name: "Longou", chrono: "00:25:24" },
+                    { rank: 19, name: "Méli", chrono: "00:18:16" },
+                    { rank: 20, name: "AF7", chrono: "00:16:48" },
+                    { rank: 21, name: "Le Bg du 78", chrono: "00:15:05" },
+                    { rank: 22, name: "Pedro", chrono: "00:15:47" },
+                    { rank: 23, name: "Bouclinette", chrono: "00:16:06" },
+                    { rank: 24, name: "Florent", chrono: "00:19:12" },
+                    { rank: 25, name: "Sabrina", chrono: "00:18:03" },
+                    { rank: 26, name: "Gaultier", chrono: "00:21:35" },
+                    { rank: 27, name: "Vio", chrono: "00:21:47" },
+                    { rank: 28, name: "Emma", chrono: "00:31:30" },
+                    { rank: 29, name: "Annie B", chrono: "00:31:46" },
+                    { rank: 30, name: "Aude", chrono: "00:44:00" },
+                    { rank: 31, name: "Camzer", chrono: "00:44:00" }
+                ],
+                "2023": [
+                    { rank: 1, name: "Pauline Mgn", chrono: "00:27:19" },
+                    { rank: 2, name: "Clément Mgn", chrono: "00:27:19" },
+                    { rank: 3, name: "Anaïs", chrono: "00:23:35" },
+                    { rank: 4, name: "AF7", chrono: "00:16:44" },
+                    { rank: 5, name: "Simon", chrono: "00:20:51" },
+                    { rank: 6, name: "Ridant", chrono: "00:20:56" },
+                    { rank: 7, name: "Paquman", chrono: "00:16:56" },
+                    { rank: 8, name: "Corentin", chrono: "00:20:23" },
+                    { rank: 9, name: "Basile", chrono: "00:18:55" },
+                    { rank: 10, name: "Paulo 21", chrono: "00:21:14" },
+                    { rank: 11, name: "Le BG du 78", chrono: "00:15:26" },
+                    { rank: 12, name: "Reyeps", chrono: "00:15:55" },
+                    { rank: 13, name: "Bouclinette", chrono: "00:16:26" },
+                    { rank: 14, name: "Annie B", chrono: "00:28:52" },
+                    { rank: 15, name: "Vio", chrono: "00:20:58" }
+                ],
+                "2022": [
+                    { rank: 1, name: "Jeanne", chrono: "00:32:30" },
+                    { rank: 2, name: "Annette", chrono: "00:32:40" },
+                    { rank: 3, name: "Pauline Drd", chrono: "00:27:11" },
+                    { rank: 4, name: "Léandre", chrono: "00:25:15" },
+                    { rank: 5, name: "Camzer", chrono: "00:25:22" },
+                    { rank: 6, name: "Mathilde", chrono: "00:29:25" },
+                    { rank: 7, name: "Jeff", chrono: "00:20:54" },
+                    { rank: 8, name: "Elizabeth", chrono: "00:21:33" },
+                    { rank: 9, name: "Jéjouille", chrono: "00:15:12" },
+                    { rank: 10, name: "Le BG du 78", chrono: "00:14:53" },
+                    { rank: 11, name: "Vio", chrono: "00:20:00" },
+                    { rank: 12, name: "Gretienne", chrono: "00:16:55" },
+                    { rank: 13, name: "Meike", chrono: "00:20:03" },
+                    { rank: 14, name: "AF7", chrono: "00:16:58" },
+                    { rank: 15, name: "Reyeps", chrono: "00:15:20" },
+                    { rank: 16, name: "Paquman", chrono: "00:17:17" },
+                    { rank: 17, name: "Bouclinette", chrono: "00:17:21" },
+                    { rank: 18, name: "Dilip", chrono: "00:32:20" }
+                ],
+                "2021": [
+                    { rank: 1, name: "Paulo 21", chrono: "--" },
+                    { rank: 2, name: "Ridant", chrono: "--" },
+                    { rank: 3, name: "Elisabeth", chrono: "--" },
+                    { rank: 4, name: "Longou", chrono: "--" },
+                    { rank: 5, name: "Mika", chrono: "--" },
+                    { rank: 6, name: "Gaulthier", chrono: "--" },
+                    { rank: 7, name: "Béa", chrono: "--" },
+                    { rank: 8, name: "Basile", chrono: "--" },
+                    { rank: 9, name: "Le BG du 78", chrono: "00:15:04" },
+                    { rank: 10, name: "Jéjouille", chrono: "--" },
+                    { rank: 11, name: "Philippine", chrono: "--" },
+                    { rank: 12, name: "AF7", chrono: "Abandon" }
+                ],
+                "2020": [
+                    { rank: 1, name: "Zaza", chrono: "00:25:25" },
+                    { rank: 2, name: "Camzer", chrono: "00:25:16" },
+                    { rank: 3, name: "Béa", chrono: "00:24:57" },
+                    { rank: 4, name: "Lolo", chrono: "00:24:03" },
+                    { rank: 5, name: "Vio", chrono: "00:20:28" },
+                    { rank: 6, name: "AF7", chrono: "00:18:55" },
+                    { rank: 7, name: "Aubin", chrono: "00:18:48" },
+                    { rank: 8, name: "Jéjouille", chrono: "00:16:35" },
+                    { rank: 9, name: "Reyeps", chrono: "00:16:20" },
+                    { rank: 10, name: "Pedro", chrono: "00:16:11" },
+                    { rank: 11, name: "Le BG du 78", chrono: "00:15:48" }
+                ]
+            };
+
+            let currentYear = "2025";
+            let currentSortColumn = "count";
+            let currentSortDirection = "desc"; // par défaut du plus grand au plus petit pour les participations
+
+            function renderTable(year, filter = "") {
+                const data = resultsData[year] || [];
+                const tbody = document.getElementById("resultsTableBody");
+                tbody.innerHTML = "";
+
+                const filteredData = data.filter(item => 
+                    item.name.toLowerCase().includes(filter.toLowerCase())
+                );
+
+                if (filteredData.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Aucun coureur trouvé</td></tr>`;
+                } else {
+                    filteredData.forEach(item => {
+                        let rankDisplay = item.rank;
+                        if (item.rank === 1) rankDisplay = `<span class="rank-badge rank-1">🥇 1</span>`;
+                        else if (item.rank === 2) rankDisplay = `<span class="rank-badge rank-2">🥈 2</span>`;
+                        else if (item.rank === 3) rankDisplay = `<span class="rank-badge rank-3">🥉 3</span>`;
+
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `
+                            <td>${rankDisplay}</td>
+                            <td><strong>${item.name}</strong></td>
+                            <td>${item.chrono}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+
+                document.getElementById("statWinner").innerText = data.length > 0 ? data[0].name : "---";
+                document.getElementById("statWinnerChrono").innerText = data.length > 0 ? data[0].chrono : "---";
+                document.getElementById("statCount").innerText = data.length;
+            }
+
+            function timeToSeconds(tStr) {
+                if (!tStr || tStr.includes("--") || tStr.includes("Abandon")) return null;
+                const parts = tStr.split(":");
+                if (parts.length === 3) {
+                    return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseFloat(parts[2]);
+                } else if (parts.length === 2) {
+                    return parseInt(parts[0]) * 60 + parseFloat(parts[1]);
+                }
+                return null;
+            }
+
+            function secondsToTime(sec) {
+                if (sec === null || isNaN(sec)) return "--";
+                const m = Math.floor(sec / 60);
+                const s = Math.round(sec % 60);
+                return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }
+
+            function computeTriviaStats(filter = "") {
+                const runnerMap = {};
+
+                Object.keys(resultsData).forEach(year => {
+                    resultsData[year].forEach(entry => {
+                        const name = entry.name;
+                        const rank = entry.rank;
+                        const sec = timeToSeconds(entry.chrono);
+
+                        if (!runnerMap[name]) {
+                            runnerMap[name] = { name: name, ranks: [], seconds: [] };
+                        }
+                        runnerMap[name].ranks.push(rank);
+                        if (sec !== null) {
+                            runnerMap[name].seconds.push(sec);
+                        }
+                    });
+                });
+
+                let triviaArray = Object.values(runnerMap).map(runner => {
+                    const count = runner.ranks.length;
+                    const best = Math.min(...runner.ranks);
+                    const worst = Math.max(...runner.ranks);
+                    const avgRank = parseFloat((runner.ranks.reduce((a, b) => a + b, 0) / count).toFixed(1));
+                    
+                    let avgSec = null;
+                    let avgTimeStr = "--";
+                    if (runner.seconds.length > 0) {
+                        avgSec = runner.seconds.reduce((a, b) => a + b, 0) / runner.seconds.length;
+                        avgTimeStr = secondsToTime(avgSec);
+                    }
+
+                    return { name: runner.name, count, best, worst, avgRank, avgSec, avgTimeStr };
+                });
+
+                // Tri dynamique selon la colonne sélectionnée
+                triviaArray.sort((a, b) => {
+                    let valA = a[currentSortColumn];
+                    let valB = b[currentSortColumn];
+
+                    if (valA === null) valA = Infinity;
+                    if (valB === null) valB = Infinity;
+
+                    if (typeof valA === 'string') {
+                        return currentSortDirection === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                    } else {
+                        return currentSortDirection === 'asc' ? valA - valB : valB - valA;
+                    }
+                });
+
+                if (filter) {
+                    triviaArray = triviaArray.filter(item => item.name.toLowerCase().includes(filter.toLowerCase()));
+                }
+
+                const tbody = document.getElementById("triviaTableBody");
+                tbody.innerHTML = "";
+
+                if (triviaArray.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Aucun coureur trouvé</td></tr>`;
+                } else {
+                    triviaArray.forEach(item => {
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `
+                            <td><strong>${item.name}</strong></td>
+                            <td style="text-align: center;">${item.count}</td>
+                            <td style="text-align: center;"><span class="rank-badge ${item.best === 1 ? 'rank-1' : ''}">${item.best}</span></td>
+                            <td style="text-align: center;">${item.worst}</td>
+                            <td style="text-align: center;">${item.avgRank}</td>
+                            <td style="text-align: center;">${item.avgTimeStr}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            }
+
+            // Gestionnaires des onglets d'années
+            document.querySelectorAll(".year-tab").forEach(tab => {
+                tab.addEventListener("click", function() {
+                    document.querySelectorAll(".year-tab").forEach(t => t.classList.remove("active"));
+                    this.classList.add("active");
+                    currentYear = this.getAttribute("data-year");
+                    document.getElementById("searchInput").value = "";
+                    renderTable(currentYear);
+                });
+            });
+
+            document.getElementById("searchInput").addEventListener("input", function(e) {
+                renderTable(currentYear, e.target.value);
+            });
+
+            document.getElementById("triviaSearchInput").addEventListener("input", function(e) {
+                computeTriviaStats(e.target.value);
+            });
+
+            // Gestionnaires du clic sur les en-têtes du tableau Trivia pour trier
+            document.querySelectorAll("th.sortable").forEach(th => {
+                th.addEventListener("click", function() {
+                    const sortKey = this.getAttribute("data-sort");
+                    if (currentSortColumn === sortKey) {
+                        currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        currentSortColumn = sortKey;
+                        // Par défaut ascendant pour les classements et le nom, descendant pour participations et temps
+                        currentSortDirection = (sortKey === 'count' || sortKey === 'avgSec') ? 'desc' : 'asc';
+                    }
+                    computeTriviaStats(document.getElementById("triviaSearchInput").value);
+                });
+            });
+
+            // Initialisation au chargement
+            renderTable(currentYear);
+            computeTriviaStats();
+        </script>
+
+        <!-- Scripts du template -->
+            <script src="assets/js/jquery.min.js"></script>
+            <script src="assets/js/jquery.scrollex.min.js"></script>
+            <script src="assets/js/jquery.scrolly.min.js"></script>
+            <script src="assets/js/browser.min.js"></script>
+            <script src="assets/js/breakpoints.min.js"></script>
+            <script src="assets/js/util.js"></script>
+            <script src="assets/js/main.js"></script>
+
+    </body>
+</html>
