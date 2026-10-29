@@ -176,15 +176,15 @@
                                     <button class="button year-tab" data-year="2020">Édition 2020</button>
                                 </div>
 
-                                <!-- Cartes statistiques -->
+                                <!-- Cartes statistiques mises à jour -->
                                 <div class="stats-grid">
                                     <div class="stat-card">
                                         <h4>Vainqueur de l'édition</h4>
                                         <div class="stat-value" id="statWinner">---</div>
                                     </div>
                                     <div class="stat-card">
-                                        <h4>Chrono du Vainqueur</h4>
-                                        <div class="stat-value" id="statWinnerChrono">---</div>
+                                        <h4>Chrono Moyen de la Course</h4>
+                                        <div class="stat-value" id="statAvgChrono">---</div>
                                     </div>
                                     <div class="stat-card">
                                         <h4>Coureurs Classés</h4>
@@ -436,6 +436,24 @@
                 return cleaned;
             }
 
+            function timeToSeconds(tStr) {
+                if (!tStr || tStr.includes("--") || tStr.includes("Abandon")) return null;
+                const parts = tStr.split(":");
+                if (parts.length === 3) {
+                    return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseFloat(parts[2]);
+                } else if (parts.length === 2) {
+                    return parseInt(parts[0]) * 60 + parseFloat(parts[1]);
+                }
+                return null;
+            }
+
+            function secondsToTime(sec) {
+                if (sec === null || isNaN(sec)) return "--";
+                const m = Math.floor(sec / 60);
+                const s = Math.round(sec % 60);
+                return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }
+
             function renderTable(year, filter = "") {
                 const yearObj = resultsData[year] || { runners: [], extras: "" };
                 const data = yearObj.runners;
@@ -465,28 +483,18 @@
                     });
                 }
 
+                // Calcul du chrono moyen pour l'édition courante
+                const validSeconds = data.map(r => timeToSeconds(r.chrono)).filter(s => s !== null);
+                let avgTimeStr = "---";
+                if (validSeconds.length > 0) {
+                    const avgSec = validSeconds.reduce((a, b) => a + b, 0) / validSeconds.length;
+                    avgTimeStr = secondsToTime(avgSec);
+                }
+
                 document.getElementById("statWinner").innerText = data.length > 0 ? data[0].name : "---";
-                document.getElementById("statWinnerChrono").innerText = data.length > 0 ? data[0].chrono : "---";
+                document.getElementById("statAvgChrono").innerText = avgTimeStr;
                 document.getElementById("statCount").innerText = data.length;
                 document.getElementById("extrasContent").innerHTML = yearObj.extras || "Aucun extra pour cette édition.";
-            }
-
-            function timeToSeconds(tStr) {
-                if (!tStr || tStr.includes("--") || tStr.includes("Abandon")) return null;
-                const parts = tStr.split(":");
-                if (parts.length === 3) {
-                    return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseFloat(parts[2]);
-                } else if (parts.length === 2) {
-                    return parseInt(parts[0]) * 60 + parseFloat(parts[1]);
-                }
-                return null;
-            }
-
-            function secondsToTime(sec) {
-                if (sec === null || isNaN(sec)) return "--";
-                const m = Math.floor(sec / 60);
-                const s = Math.round(sec % 60);
-                return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
             }
 
             function computeTriviaStats(filter = "") {
